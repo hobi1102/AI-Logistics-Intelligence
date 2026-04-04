@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Logistics Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+
+    <div class="container">
+        <header>
+            <h1>AI Logistics <span>Intelligence</span></h1>
+            <p>Predictive models for freight cost and invoice risk analysis.</p>
+            
+            <div class="instructions">
+                <h3>How to Use & How It Works</h3>
+                <p><strong>Usage:</strong> Input your vendor invoice or purchase order details into the forms below and click the button to generate an instant prediction.</p>
+                <p><strong>Under the Hood:</strong> This website is powered by a Flask Python backend. It runs your data through two <em>Random Forest Machine Learning</em> models that were trained on your local inventory database using Scikit-Learn:</p>
+                <ul>
+                    <li><strong>Freight Predictor:</strong> Uses the <em>Invoice Dollars</em> feature to continuously predict the estimated freight cost.</li>
+                    <li><strong>Invoice Risk:</strong> Uses a scaled combination of <em>Invoice Qty, Invoice $, Freight, PO Total Qty, and PO Total Dollars</em> to classify if an invoice should be flagged as risky or anomalous.</li>
+                </ul>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <!-- Freight Cost Predictor Card -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    </div>
+                    <h2>Freight Predictor</h2>
+                </div>
+                <div class="card-body">
+                    <form id="freight-form">
+                        <div class="input-group">
+                            <label for="dollars">Invoice Dollars ($)</label>
+                            <input type="number" id="dollars" name="dollars" placeholder="e.g. 15000" required step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="freight-algo">Regression Model</label>
+                            <select id="freight-algo" class="custom-select">
+                                <option value="rf" selected>Random Forest Regression</option>
+                                <option value="dt">Decision Tree Regression</option>
+                                <option value="lr">Linear Regression</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn primary-btn">
+                            Predict Freight Cost
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                    </form>
+                    <div class="result-container" id="freight-result" style="display: none;">
+                        <span class="label">Estimated Cost:</span>
+                        <h3 class="value" id="freight-value">$0.00</h3>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Invoice Risk Flagging Card -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="icon-wrapper alert-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    </div>
+                    <h2>Invoice Risk Analysis</h2>
+                </div>
+                <div class="card-body">
+                    <form id="invoice-form" class="grid-form">
+                        <div class="input-group">
+                            <label for="inv-qty">Invoice Qty</label>
+                            <input type="number" id="inv-qty" placeholder="0" required step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="inv-dollars">Invoice ($)</label>
+                            <input type="number" id="inv-dollars" placeholder="0" required step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="freight">Freight ($)</label>
+                            <input type="number" id="freight" placeholder="0" required step="any">
+                        </div>
+                        <div class="input-group">
+                            <label for="total-qty">PO Total Qty</label>
+                            <input type="number" id="total-qty" placeholder="0" required step="any">
+                        </div>
+                        <div class="input-group full-width">
+                            <label for="total-dollars">PO Total Dollars ($)</label>
+                            <input type="number" id="total-dollars" placeholder="0" required step="any">
+                        </div>
+                        <button type="submit" class="btn primary-btn full-width">
+                            Analyze Risk
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        </button>
+                    </form>
+                    <div class="result-container invoice-result" id="invoice-result" style="display: none;">
+                        <div class="status-indicator" id="risk-indicator"></div>
+                        <h3 class="value" id="invoice-value">Processing...</h3>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Powered by RandomForest AI &bull; Built with Flask</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
