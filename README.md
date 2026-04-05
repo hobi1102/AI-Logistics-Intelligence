@@ -2,6 +2,42 @@
 
 A high-performance, machine-learning-powered web interface built with **Python/Flask** and **Scikit-learn**. This platform empowers logistics teams to predict freight costs and detect anomalous invoice risks before payment processing.
 
+## 🏛️ System Architecture
+
+```mermaid
+graph TD
+    %% User Layer
+    User((User / Browser)) -->|Interacts| UI[<b>Frontend UI</b><br/>Vanilla JS / Glassmorphism CSS]
+
+    %% API Layer
+    subgraph Flask_Backend [<b>Flask REST API</b>]
+        UI -->|POST /api/predict/*| Router[API Route Handler]
+        Router -->|Process| Logic[Inference Logic]
+    end
+
+    %% Intelligence Layer
+    subgraph ML_Inference [<b>AI Inference Engine</b>]
+        Logic -->|Input Features| Scaler[<b>StandardScaler</b><br/>Normalization]
+        Scaler -->|Scaled Data| Models[<b>Scikit-Learn Models</b><br/>RF / DT / Linear Regression]
+        Models -->|Predictions| Logic
+    end
+
+    %% Offline Pipeline
+    subgraph Offline_Training [<b>Data & Training Pipeline</b>]
+        DB[(inventory.db<br/>SQLite)] -.->|Data Source| NB[Jupyter Notebooks]
+        NB -.->|Training| Train[Model Selection & Training]
+        Train -.->|Export| Models
+        Train -.->|Export| Scaler
+    end
+
+    %% Styling
+    style User fill:#f8fafc,stroke:#64748b,stroke-width:2px
+    style UI fill:#eff6ff,stroke:#3b82f6,stroke-width:2px
+    style Flask_Backend fill:#f0fdf4,stroke:#22c55e,stroke-width:2px
+    style ML_Inference fill:#fff7ed,stroke:#f97316,stroke-width:2px
+    style Offline_Training fill:#fdf4ff,stroke:#a855f7,stroke-width:1px,stroke-dasharray: 5 5
+```
+
 ---
 
 ## 🏗️ How It Was Created
