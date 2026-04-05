@@ -37,6 +37,20 @@ The development journey followed these specific milestones:
 
 ---
 
+## 🎨 Visual Interface Walkthrough
+
+### **1. AI-Powered Dashboard & Onboarding**
+![Dashboard Hero Section](screenshots/dashboard_hero.png)
+*The hero section provides a clear induction for users, explaining how the Random Forest models were trained on physical inventory data (`inventory.db`) to provide real-time logistics insights.*
+
+### **2. Predictive Analytics Suite**
+![Predictive Cards](screenshots/predictor_cards.png)
+*A dual-card interface allowing for simultaneous analysis:*
+*   **Freight Predictor:** Enter invoice dollars and toggle between ML models (RF, Linear Regression, or Decision Tree) to see estimated shipping costs.
+*   **Invoice Risk Analysis:** Input 5 parameters (Qty, Dollars, Freight, PO totals) to receive a binary risk assessment (Safe vs. Risk) backed by classification logic.
+
+---
+
 ## ✨ Key Features
 -   **Multi-Model Predictor**: Toggle between Random Forest, Decision Tree, and Linear Regression for freight estimation.
 -   **Risk Analysis Dashboard**: Visual indicators (Safe vs. Risk) with intuitive color coding.
@@ -45,36 +59,5 @@ The development journey followed these specific milestones:
 
 ---
 
-## 🛠️ Tech Stack
--   **Frontend:** HTML5, CSS3 (Custom Design System), JavaScript (ES6+)
--   **Backend:** Python 3.x, Flask
--   **Data Science:** Scikit-Learn, Pandas, Numpy, Joblib, SQLite
-
----
-
-## 🚀 Getting Started
-
-### Local Installation
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/your-username/ai-logistics-app.git
-    cd ai-logistics-app
-    ```
-2.  **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-3.  **Run the app:**
-    ```bash
-    python app.py
-    ```
-4.  Visit `http://127.0.0.1:5000` in your browser.
-
----
-
-## 📦 Deployment
-The application is pre-configured for **Vercel** and **Render**:
--   **Start Command:** `gunicorn app:app`
--   **Build Command:** `pip install -r requirements.txt`
 
 *Note: The `inventory.db` is ignored in Git to keep the repo clean. Inference relies solely on the high-performance `.pkl` files in the `models/` folder.*
